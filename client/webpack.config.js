@@ -18,7 +18,11 @@ module.exports = () => {
       path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-      
+      // added HtmlWebpackPlugin
+      new HtmlWebpackPlugin({
+        title: "JATE",
+        template: "./index.html",
+      })
     ],
 
     module: {
