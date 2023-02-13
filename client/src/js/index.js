@@ -23,10 +23,10 @@ if (typeof editor === 'undefined') {
   loadSpinner();
 }
 
-// Check if service workers are supported
+// Check if service workers are supported and register if so - may need to replace this whole starter section with registration as seen in the lessons
 if ('serviceWorker' in navigator) {
-  // register workbox service worker
-  const workboxSW = new Workbox('/src-sw.js');
+  // register workbox service worker (updated from starter code's src-sw.js to service-worker.js for webpack compatability)
+  const workboxSW = new Workbox('/service-worker.js');
   workboxSW.register();
 } else {
   console.error('Service workers are not supported in this browser.');
