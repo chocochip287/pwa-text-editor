@@ -1,10 +1,9 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const path = require('path');
-// added GenerateSW for service worker
-const { InjectManifest, GenerateSW } = require('workbox-webpack-plugin');
+const { InjectManifest } = require('workbox-webpack-plugin');
 
-// TODO: Add and configure workbox plugins for a service worker (done) and manifest file (pending).
+// TODO: Add and configure workbox plugins for a service worker (done) and manifest file (done).
 // TODO: Add CSS loaders and babel to webpack (done).
 
 module.exports = () => {
@@ -25,12 +24,36 @@ module.exports = () => {
         title: "JATE",
         template: "./index.html",
       }),
-      // plugin for GenerateSW
-      new GenerateSW({
-        swDest: "./service-worker.js"
+      // plugin for GenerateSW - builds a simple SW with no preset strategies
+      // new GenerateSW({
+      //   swDest: "./service-worker.js"
+      // }),
+      // manifest - builds a SW using the src-sw strategies
+      new InjectManifest({
+        swSrc: "./src-sw.js",
+        swDest: "service-worker.js"
       }),
-    ],
+      // plugin for WebpackPwaManifest
+      new WebpackPwaManifest({
+        name: "Just Another Text Editor",
+        short_name: "JATE",
+        description: "As advertised, it's just another text editor!",
+        start_url: "./",
+        publicPath: "./",
+        // fingerprints disabled to try to correct icon linking
+        fingerprints: false,
+        icons: [
+          {
+            src: path.resolve("src/images/logo.png"),
+            // nav bar uses a 96 x 96 icon. other sizes added to the array to display in manifest
+            sizes: [96, 144, 256],
+            // sets the path for the icon files - set this way so that index.html links correctly.
+            destination: path.join("assets/icons")
+          }
+        ]
+      })
 
+    ],
     module: {
       rules: [
         // CSS loader assuming no mini-css-extract-plugin

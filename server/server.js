@@ -1,7 +1,8 @@
 const express = require('express');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+// updated port for local use
+const PORT = process.env.PORT || 6505;
 
 app.use(express.static('../client/dist'));
 app.use(express.urlencoded({ extended: true }));
